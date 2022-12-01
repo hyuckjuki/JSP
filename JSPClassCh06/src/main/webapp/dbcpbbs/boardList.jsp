@@ -8,6 +8,7 @@
 	/* BoardList 요청을 처리하는 페이지// 개발자로드맵
 		BoardDao를 이용해서(의존해서) DB로부터 게시글 리스트를 읽어와 출력 
 	*/
+	/*수정*/
 	DBCPBoardDao dao = new DBCPBoardDao();
 	ArrayList<Board> bList = dao.boardList();
 	
