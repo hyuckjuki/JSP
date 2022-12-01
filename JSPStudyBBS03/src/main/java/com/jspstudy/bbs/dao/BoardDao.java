@@ -1,0 +1,318 @@
+package com.jspstudy.bbs.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import com.jspstudy.bbs.vo.Board;
+
+//DBCP를 활용한 DAO(Data Access Object) 클래스
+public class BoardDao {
+	
+	// 데이터베이스 작업에 필요한 객체 타입으로 변수를 선언	
+	// Connection 객체는 DB에 연결해 작업을 수행할 수 있도록 지원하는 객체
+	private Connection conn;
+	
+	// Statement, PreparedStatement 객체는 DB에 쿼리를 발행하는 객체
+	private PreparedStatement pstmt;
+	
+	// ResultSet 객체는 DB에 SELECT 쿼리를 발행한 결과를 저장하는 객체
+	private ResultSet rs;
+	
+	/* DataSource 객체는 데이터 원본과 연결할 수 있도록 지원하는 객체
+	 * JNDI 방식으로 DBCP를 찾아 DBCP에서 Connection 객체를 대여하는 객체 
+	 **/
+	private static DataSource ds;
+	
+	/* 기본 생성자가 호출될 때 마다 ConnectionPool에 접근해  Connection 객체를
+	 * 얻어 올 수 있는 DataSource 객체를 생성한다.
+	 **/
+	public BoardDao() {	 
+		try {			
+			/* 1. 자바 네이밍 서비스를 사용하기 위해 
+			 * javax.naming 패키지의 InitialContext 객체를 생성한다.
+			 **/ 
+			Context initContext = new InitialContext();
+			
+			/* 2. InitialContext 객체를 이용해 디렉토리 서비스에서 필요한 객체를
+			 * 찾기 위해 기본 네임스페이스를 인자로 지정해 Context 객체를 얻는다.
+			 *
+			 * 디렉토리 서비스에서 필요한 객체를 찾기 위한 일종의 URL 개념으로 
+			 * 디렉토리 방식을 사용하므로 java:comp/env와 같이 지정한다.
+			 **/
+			Context envContext = (Context) initContext.lookup("java:/comp/env");
+
+			/* 3. "jdbc/bbsDBPool"이라는 이름을 가진 DBCP에 접근하기 위한
+			 * DataSource 객체를 얻는다.
+			 *
+			 * context.xml 파일에서 지정한 수의 커넥션을 생성해 커넥션 풀에 저장한다.
+			 * "java:/comp/env"는 JNDI에서 기본적으로 사용하는 네임스페이스 이고 
+			 * "jdbc/bbsDBPool"은 DBCP 이름으로 임의로 지정하여 사용할 수 있다.
+			 * 
+			 * BoardDao 클래스가 사용되면 클래스 정보가 메모리에 로딩되면서
+			 * new 연산자에 의해서 BoardDao 클래스의 인스턴스가 생성된다.
+			 * 그리고 이 생성자가 호출되면서 DBCP를 찾는 코드가 실행되고 DBCP에 
+			 * 접근해 Connection 객체를 대여할 수 있는 DataSource 객체를 구한다.
+			 **/
+			ds = (DataSource) envContext.lookup("jdbc/bbsDBPool");
+			
+		} catch(NamingException e) {			
+			System.out.println("BoardDao() : NamingException");
+			e.printStackTrace();			
+		} 
+	}
+
+	
+	/* 전체 게시 글 수를 계산하기 위해 호출되는 메서드 - paging 처리에 사용
+	 * DB 테이블에 등록된 모든 게시 글의 수를 반환하는 메서드
+	 **/
+	public int getBoardCount() {
+		
+		String sqlCount = "SELECT COUNT(*) FROM jspbbs";
+		int count = 0;
+		
+		try{			
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlCount);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				count = rs.getInt(1);
+			}			
+		} catch(Exception e) {			
+			e.printStackTrace();
+		} finally {			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();				
+			} catch(SQLException se) {}
+		}
+		return count;
+	}
+
+
+	/* 한 페이지에 보여 질 게시 글 리스트 요청시 호출되는 메소드
+	 * 요청한 페이지에 해당하는 게시 글 리스트를 DB에서 읽어와 반환하는 메소드
+	 **/
+	public ArrayList<Board> boardList(int startRow, int endRow) {
+		
+		/* 요청한 페이지에 해당하는 게시 글 리스트를 추출하기 위한 쿼리
+		 * 테이블에서 현재 페이지에 해당하는 게시 글을 검색할 때 ROWNUM을 사용했다.
+		 * ROWNUM은 쿼리의 결과로 검색되는 행들의 순서 값을 가진 의사컬럼으로
+		 * 1부터 시작한다. 최신 게시 글을 먼저 보여주기 위해 ORDER BY DESC를 
+		 * 지정하고 요청된 페이지에 보여줄 게시 글의 시작 행과 마지막 행을 지정한다.
+		 *  
+		 * 아래의 쿼리로 질의하게 되면 게시 글 전체를 글 번호에 해당하는 no를 기준으로
+		 * 내림차순 정렬하여 검색하고 WHERE 절에 지정한 첫 번째 Placeholder(?)에
+		 * 해당하는 시작 행 부터 두 번째 Placeholder(?)에 해당하는 마지막 행까지의
+		 * 게시 글을 추출할 수 있다.
+		 **/		
+		String sqlBoardList = "SELECT * FROM (SELECT ROWNUM num,"
+				+ " no, title, writer, content, reg_date, read_count, pass, file1 FROM"
+				+ " (SELECT * FROM jspbbs ORDER BY no DESC)) "
+				+ " WHERE num >= ? AND num <= ?";
+		
+		ArrayList<Board> boardList = null;
+		
+		try{			
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlBoardList);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				boardList = new ArrayList<Board>();
+				
+				do {					
+					Board board = new Board();
+					board.setNo(rs.getInt("no"));
+					board.setTitle(rs.getString("title"));					
+					board.setWriter(rs.getString("writer"));
+					board.setContent(rs.getString("content"));
+					board.setRegDate(rs.getTimestamp("reg_date"));
+					board.setReadCount(rs.getInt("read_count"));
+					board.setPass(rs.getString("pass"));
+					board.setFile(rs.getString("file1"));
+					
+					boardList.add(board);
+					
+				} while(rs.next());
+			}
+		} catch(Exception e) {			
+			e.printStackTrace();
+			
+		} finally {			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException se) {}
+		}
+		return boardList;
+	}	
+	
+	
+	/* 게시 글 내용 보기 요청 시 호출되는 메서드
+	 * no에 해당하는 게시 글 을 DB에서 읽어와 Board 객체로 반환하는 메서드 
+	 **/
+	public Board getBoard(int no) {
+		String sqlBoard = "SELECT * FROM jspbbs WHERE no=?";
+		Board board = null;
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlBoard);
+			pstmt.setInt(1,  no);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				board = new Board();
+				
+				board.setNo(rs.getInt("no"));
+				board.setTitle(rs.getString("title"));				
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegDate(rs.getTimestamp("reg_date"));
+				board.setReadCount(rs.getInt("read_count"));
+				board.setPass(rs.getString("pass"));
+				board.setFile(rs.getString("file1"));
+			}			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {}
+		}
+		return board;
+	}	
+	
+	/* 게시 글쓰기 요청시 호출되는 메서드
+	 * 게시 글을 작성하고 등록하기 버튼을 클릭하면 게시 글을 DB에 추가하는 메서드 
+	 **/
+	public void insertBoard(Board board) {
+		
+		String sqlInsert = "INSERT INTO jspbbs(no, title, writer, content,"
+				+ " reg_date, read_count, pass, file1) "
+				+ " VALUES(jspbbs_seq.NEXTVAL, ?, ?, ?, SYSDATE, 0, ?, ?)";
+		
+		try {			
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlInsert);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getWriter());			
+			pstmt.setString(3, board.getContent());
+			pstmt.setString(4, board.getPass());
+			pstmt.setString(5, board.getFile());
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();			
+		} finally {			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();				
+			} catch(SQLException se) {}
+		}
+	}
+
+
+	/* 게시 글 수정, 게시 글 삭제 시 비밀번호 입력을 체크하는 메서드
+	 **/
+	public boolean isPassCheck(int no, String pass) {
+		boolean isPass = false;
+		String sqlPass = "SELECT pass FROM jspbbs WHERE no=?";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlPass);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isPass = rs.getString(1).equals(pass); 
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {}
+		} 
+		return isPass;
+	}	
+	
+	
+	/* 게시 글 수정 요청시 호출되는 메서드
+	 * 게시 글을 수정하고 수정하기 버튼을 클릭하면 게시 글을 DB에 수정하는 메서드 
+	 **/
+	public void updateBoard(Board board) {
+		
+		String sqlUpdate = "UPDATE jspbbs set title=?, writer=?, content=?,"				
+				+ " reg_date=SYSDATE, file1=? WHERE no=?";
+		
+		try {			
+			conn = ds.getConnection();
+			
+			pstmt = conn.prepareStatement(sqlUpdate);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getWriter());			
+			pstmt.setString(3, board.getContent());
+			pstmt.setString(4, board.getFile());
+			pstmt.setInt(5, board.getNo());
+			
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();			
+		} finally {			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();				
+			} catch(SQLException se) {}
+		}
+	}
+	
+	
+	/* 게시 글 삭제 요청 시 호출되는 메서드 
+	 * no에 해당 하는 게시 글을 DB에서 삭제하는 메서드 
+	 **/
+	public void deleteBoard(int no) {
+		
+		String sqlDelete = "DELETE FROM jspbbs WHERE no=?"; 
+		try {			
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sqlDelete);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();			
+		} finally {			
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();				
+			} catch(SQLException se) {}
+		}
+	}
+}
+
+
+
+
+
+

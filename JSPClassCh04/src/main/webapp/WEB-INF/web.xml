@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>JSPClassCh04</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>servletLifeCycle</servlet-name>
+    <servlet-class>com.jspstudy.ch04.lifecycle.ServletLifeCycle</servlet-class>
+    <init-param>
+      <param-name>READ_FILE</param-name>
+      <param-value>/WEB-INF/set/setting.txt</param-value>
+    </init-param>
+    <init-param>
+      <param-name>TEST_PARAM</param-name>
+      <param-value>테스트 파라미터</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>servletLifeCycle</servlet-name>
+    <url-pattern>/servletLifeCycle</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>servletLifeCycle</servlet-name>
+    <url-pattern>*.cycle</url-pattern>
+  </servlet-mapping>
+</web-app>
