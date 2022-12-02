@@ -1,0 +1,94 @@
+/* 디스플레이 관련 클래스 */
+.inblock {
+	display: inline-block;
+}
+.mxw600 {
+	max-width: 600px;
+}
+.mxw650 {
+	max-width: 650px;
+}
+.mxw700 {
+	max-width: 700px;
+}
+.mxw750 {
+	max-width: 750px;
+}
+.box50 {
+	width:50px;
+	height: 50px;
+}
+
+/* 마진 관련 클래스 */
+.mgb15 {
+	margin-bottom: 15px;
+}
+
+.mgb20 {
+	margin-bottom: 20px;
+}
+
+.glbl {
+	margin-left: 10px;
+}
+
+/* 패딩 관련 클래스 */
+.pdl10 {
+	padding-left: 10px;
+}
+.pdr10 {
+	padding-right: 10px;
+}
+
+.pdh30 {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+/* 오버플로우 클래스 */
+.hidden {
+	overflow: hidden;
+}
+
+/* 폰트 관련 클래스 */
+.ft12 {
+	font-size: 12pt;
+}
+.ft16 {
+	font-size: 16pt;
+}
+
+.ft18 {
+	font-size: 18pt;
+}
+
+.bd {
+	font-weight: bold;
+}
+
+/* 버튼 사이즈 클래스 */
+.w80 {
+	width: 80px;
+}
+
+/* 아바타 관련 사이즈 */
+.avtimg {
+	width: 98px;
+	height: 98px;
+}
+
+.imgbox {
+	width: 98px;
+	height: 98px;
+}
+.avtfr {
+	width: 100px;
+}
+
+.h9 {
+	height: 9px;
+}
+
+.h30 {
+	height: 29px;
+}

@@ -166,7 +166,7 @@ public class DBCPBoardDao {
          if(pstmt != null)pstmt.close();
          if(conn != null)conn.close();
       } catch(SQLException e) {}
-   }
+      }
    }
    
    

@@ -12,10 +12,10 @@
 <body>	
 	
 	<form name="writeForm" action="writeProcess.jsp" id="writeForm"
-			 method="post">
+			 method="post" enctype="multipart/form-data">
 		<table class="readTable">
 			<tr>
-				<td colspan="4" class="boardTitle"><h2>음반 등록하기</h2></td>
+				<td colspan="4" class="boardTitle"><h2>게시 글쓰기</h2></td>
 			</tr>
 			<tr>
 				<td colspan="4">&nbsp;</td>
@@ -32,9 +32,21 @@
 				</td>
 			</tr>		
 			<tr>
-				<td class="readTh">제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
+				<td class="readTh">곡이름</td>
 				<td class="readTd" colspan=3>
-					<input type="text" name="title" size="90" id="title" maxlength="50"/>
+					<input type="text" name="mname" size="90" id="mname" maxlength="50"/>
+				</td>
+			</tr>	
+			<tr>
+				<td class="readTh">가수명</td>
+				<td class="readTd" colspan=3>
+					<input type="text" name="vocal" size="90" id="vocal" maxlength="50"/>
+				</td>
+			</tr>	
+			<tr>
+				<td class="readTh">발매일</td>
+				<td class="readTd" colspan=3>
+					<input type="date" name="wdate" size="90" id="wdate" maxlength="50"/>
 				</td>
 			</tr>			
 			<tr>
@@ -46,16 +58,16 @@
 			<tr>
 				<td class="readTh">파일첨부</td>
 				<td class="readTd" colspan=3>
-					<input type="file" name="file" size="70" id="file" maxlength="50"/>
+					<input type="file" name="cover" size="70" id="cover" maxlength="50"/>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="4">&nbsp;</td>
 			</tr>
 			<tr>
-				<td colspan="4" class="tdSpan"><input type="reset" value="수정하기"/>
+				<td colspan="4" class="tdSpan"><input type="reset" value="다시쓰기"/>
 					&nbsp;&nbsp;<input type="submit" value="등록하기" />
-					&nbsp;&nbsp;<input type="button" value="취소하기" 
+					&nbsp;&nbsp;<input type="button" value="목록보기" 
 						onclick="javascript:window.location.href='boardList.jsp'"/></td>
 			</tr>
 		</table>
