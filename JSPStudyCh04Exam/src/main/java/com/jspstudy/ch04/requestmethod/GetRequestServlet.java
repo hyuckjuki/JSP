@@ -50,7 +50,7 @@ public class GetRequestServlet extends HttpServlet {
 				result = result + firstNum;
 			}
 			// 정상적인 처리시 웹 브라우저에 출력할 내용 작성
-			out.println(  num1 + "~" + secondNum +"의 합은 " + result + " 입니다.");
+			out.println(  num1 + " 부터" + secondNum +"까지의 합은 " + result + " 입니다.");
 			
 		} catch(NumberFormatException e) {			
 			// NumberFormatException이 발생할 시 웹 브라우저에 출력할 내용 작성			

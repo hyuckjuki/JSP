@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>GET 방식 요청처리</title>
+<title>숫자1과 숫자2사이의 합 구하기</title>
 </head>
 <body>
 	<!-- form 태그의 method 속성을 생략했기 때문에 default인 get 방식이 적용된다. -->
