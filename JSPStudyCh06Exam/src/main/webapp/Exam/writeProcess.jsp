@@ -54,7 +54,7 @@
 	
 	
 	int year = Integer.parseInt(wdate.split("-")[0]);
-	int month = Integer.parseInt(wdate.split("-")[1]);
+	int month = Integer.parseInt(wdate.split("-")[1])-1;
 	int day = Integer.parseInt(wdate.split("-")[2]);
 	Calendar cal = Calendar.getInstance();
 	cal.set(year, month, day);

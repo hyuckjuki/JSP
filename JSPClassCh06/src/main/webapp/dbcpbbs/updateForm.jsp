@@ -66,9 +66,8 @@
 			</tr>
 			<tr>
 				<td class="readTh">파일첨부</td>
-				<td class="readTd" colspan=3>
-					<input type="file" name="file" size="70" id="file" maxlength="50"
-						<%=b.getFile() == null ? "" : "disabled" %>/>
+					<td class="readTd" colspan=3>
+					<input type="file" name="cover" size="70" id="cover" maxlength="50"/>
 				</td>
 			</tr>
 			<tr>

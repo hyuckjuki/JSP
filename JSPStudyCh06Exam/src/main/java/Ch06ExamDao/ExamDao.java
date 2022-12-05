@@ -38,19 +38,22 @@ public class ExamDao {
 	public void updateBoard(ExamVo v) {
 	      
 	      String sqlInsert = "UPDATE "
-	            + "music SET writer=?, content=?, "
-	            + "cover=? WHERE no=?";
-	      
+	            + "music SET mname=?, writer=?, "
+	            + "vocal=?, content=?, wdate=?, cover=? WHERE no=?";
+      
 	      try {
 	         // 2. DB에 연결된 Connection 객체를 구함
 	    	  conn = ds.getConnection();
 	         // 3. 쿼리를 발행해 주는 PreaparedStatement 객체를 구함
 	         pstmt = conn.prepareStatement(sqlInsert);
 	         // 4. 쿼리에 있는 placeholder(?)에 대한 값을 설정
-	         pstmt.setString(1, v.getWriter());
-	         pstmt.setString(2, v.getContent());
-	         pstmt.setString(3, v.getCover());
-	         pstmt.setInt(4, v.getNo());
+	         pstmt.setString(1, v.getMname());
+	         pstmt.setString(2, v.getWriter());
+	         pstmt.setString(3, v.getVocal());
+	         pstmt.setString(4, v.getContent());
+	         pstmt.setDate(5, v.getWdate());
+	         pstmt.setString(6, v.getCover());
+	         pstmt.setInt(7, v.getNo());
 	         
 	         // 5. DB에 쿼리를 발행
 	         pstmt.executeUpdate();

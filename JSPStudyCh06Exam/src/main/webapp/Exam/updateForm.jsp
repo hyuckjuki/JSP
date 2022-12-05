@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="Ch06ExamVo.*, Ch06ExamDao.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 	//	어떤 게시 글을 읽어와서 아래폼에 출력해야되는지를 알아야함
 	// 게시 글의 비밀번호를 체크하기 위해서 필요한 데이터
@@ -20,7 +22,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>게시 글 수정 폼</title>
-	<link type="text/css" href="../css/board.css" rel="stylesheet" /> 
+	<link type="text/css" href="../css/myboard.css" rel="stylesheet" /> 
 	<script src="../js/jquery-3.3.1.min.js"></script>
 	<script src="../js/formcheck.js"></script>
 </head>
@@ -30,47 +32,48 @@
 		ExamVo b = dao.getBoard(no);
 %>
 	<form name="updateForm" action="updateProcess.jsp" id="updateForm"
-			 method="post">
+			 method="post" enctype="multipart/form-data">
 		<input type="hidden" name="no" value="<%=b.getNo() %>">
-		<table class="readTable">
-			<tr>
-				<td colspan="4" class="boardTitle"><h2>게시 글 수정하기</h2></td>
-			</tr>
-			<tr>
-				<td colspan="4">&nbsp;</td>
-			</tr>
-			<tr>
-				<td class="readTh">글쓴이</td>
-				<td class="readTd">
-					<input type="text" name="writer" size="30" id="writer" maxlength="10"
-						value="<%=b.getWriter() %>" readonly />
-				</td>
-				<td class="readTh">비밀번호</td>
-				<td class="readTd">
-					<input type="password" name="pass" size="30" id="pass" 
-						maxlength="10"/>
-				</td>
-			</tr>		
-			<tr>
-				<td class="readTh">제&nbsp;&nbsp;&nbsp;&nbsp;목</td>
-				<td class="readTd" colspan=3>
-					<input type="text" name="title" size="90" id="title" maxlength="50"
-						value="<%=b.getMname() %>"/>
-				</td>
-			</tr>			
-			<tr>
-				<td class="readTh">내&nbsp;&nbsp;&nbsp;&nbsp;용</td>
-				<td class="readTd" colspan="3">
-					<textarea name="content" id="content" rows="20" cols="80"><%=b.getContent() %></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td class="readTh">파일첨부</td>
-				<td class="readTd" colspan=3>
-					<input type="file" name="file" size="70" id="file" maxlength="50"
-						<%=b.getCover() == null ? "" : "disabled" %>/>
-				</td>
-			</tr>
+		<h2 class="Titlecss">음반 정보 수정</h2>
+	<table style="width: 600px;">
+		<tr>
+			<td colspan="4">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="4" class="contentTh, th"><input type="text" name="mname" value="<%=b.getMname() %>"></td>
+		</tr>
+			<%if(b.getCover() != null) {%>
+		<tr style="text-align:center;">
+			<td colspan="4" class="contentTd"><img class="imgform" src="../image/<%=b.getCover()%>"/></td>
+		</tr>
+			<%} %>
+		<tr>
+			<td class="contentTh">글쓴이</td>
+			<td class="contentTd"><input type="text" name="writer" value="<%=b.getWriter() %>"></td>
+			<td class="contentTh">발매일</td>
+			<td class="contentTd">
+				<input type="date" name="wdate" value="<%=b.getWdate() %>">
+			</td>
+		</tr>
+		<tr>		
+			<td class="contentTh">비밀번호</td>
+			<td class="contentTd"><input type="password" name="pass" id="pass"></td>
+			<td class="contentTh">가수명</td>
+			<td class="contentTd"><input type="text" name="vocal" value="<%=b.getVocal() %>"></td>
+		</tr>	
+		<tr>
+			<td class="contentTh">파&nbsp;&nbsp;&nbsp;&nbsp;일</td>
+			<td class="contentTd" colspan="3">
+				<input type="file" name="cover" size="70" id="cover" maxlength="50" value="<%=b.getCover() %>"/>
+			</td>
+		</tr>
+		<tr>		
+			<td style="text-align:center;" class="readContent" colspan="4" style="white-space: pre;">
+			<textarea name="content" id="content" rows="20" cols="80"><%=b.getContent()%></textarea></td>
+		</tr>	
+		<tr>
+			<td colspan="4">&nbsp;</td>
+		</tr>
 			<tr>
 				<td colspan="4">&nbsp;</td>
 			</tr>

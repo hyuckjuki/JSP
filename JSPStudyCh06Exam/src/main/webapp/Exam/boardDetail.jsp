@@ -55,9 +55,11 @@
 	<tr>
 		<td colspan="4" class="contentTh, th"><%=b.getMname() %></td>
 	</tr>
+	<%if(b.getCover() != null) {%>
 	<tr style="text-align:center;">
 		<td colspan="4" class="contentTd"><img class="imgform" src="../image/<%=b.getCover()%>"/></td>
 	</tr>
+	<%} %>
 	<tr>
 		<td class="contentTh">글쓴이</td>
 		<td class="contentTd"><%=b.getWriter() %></td>
@@ -91,7 +93,6 @@
 	</tr>
 	<tr>
 		<td colspan="4" class="tdSpan">
-			<input type="button" id="detailUpdate" value="수정하기" data-no="<%= b.getNo() %>"/>
 			<input type="button" id="detailUpdate" value="수정하기" data-no="<%= b.getNo() %>"/>
 			<input type="button" id="detailDelete" value="삭제하기" />			
 			<input type="button" value="목록보기" 
