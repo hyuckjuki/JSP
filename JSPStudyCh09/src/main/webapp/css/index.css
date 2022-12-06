@@ -1,0 +1,294 @@
+@CHARSET "UTF-8";
+/* 페이지 초기화 */
+* {
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+}
+/* 사이트 전체 적용 */
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+	font-family: "Gulim", Arial, Serif;
+	color: #666;
+	background-color: #FFF;
+	background-image: url(../images/body_back.gif);
+	background-repeat: repeat-x;
+	background-position: top;	
+}
+#wrap {
+	width: 1000px;
+	margin: 0 auto;	
+}
+.clear {
+	clear: both;
+}
+
+/* 링크 설정 */
+/* 
+	아래와 같이 link, visited, hover, active 순서로
+	지정하지 않으면 제대로 동작하지 않는다.
+*/
+a:link {
+	text-decoration: none;
+	color: #333;
+}
+ a:visited {
+	text-decoration: none;
+	color: #333;
+}
+a:hover {
+	text-decoration: none;
+	color: red;	
+}
+a:active {
+	text-decoration: none;
+	color: blue;
+}
+
+/* header */
+header { margin-top: 20px; }
+header img { border: none; }
+header #logo {
+	margin-left: 10px;
+	float: left;
+}
+header #header_link {
+	float: right;
+	margin-right: 10px;	
+}
+header #header_link ul { 	list-style: none; }
+header #header_link li {
+	float: left;
+	padding: 0 8px;
+	font-size: 0.75em;
+	border-right: 1px solid #999;
+}
+header #header_link ul li.no_line { border-right: none; }
+header #member_msg {
+	margin: 20px 20px 0 0;	
+	float: right;	
+	text-align: right;
+	font-size: 13px;
+	color: #008833;
+	width: 300px;
+	height: 30px;
+}
+header #member_msg {
+	margin: 20px 20px 0 0;	
+	float: right;	
+	text-align: right;
+	font-size: 13px;
+	color: #008833;
+	width: 300px;
+	height: 30px;
+}
+
+/* article */
+article {
+	width: 760px;	
+	min-height: 520px;
+	margin: 20px auto;
+	padding: 10px;
+	clear: both;
+}
+
+/* footer */
+footer {
+	font-size: 0.75em;	
+	background-image: url(../images/foot_back.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+}
+footer ul {
+	list-style: none;
+	margin: 0 0 0 200px;
+}
+footer ul li.no_line { background-image: none; }
+footer ul li {
+	float: left;
+	font-family: 'Gulim', Serif;
+	background-image: url(../images/foot_line.gif);
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+footer ul li a {
+	font-size: 1em;
+	display: block;
+	padding: 5px 15px;
+}
+footer img {
+	margin: 10px 0 0 40px;
+	float: left;
+	width: 150px;
+	border: none;
+}
+footer #foot_info {
+	margin: 10px 0 0 25px;
+	padding: 0 0 20px 0;
+	line-height: 1.5em;
+	float: left;
+	width: 600px;	
+}
+
+/* boardList */
+table {
+	margin: 20px auto;
+	padding: 0 0;	
+	border-collapse: collapse;
+	line-height: 160%;
+	font-size: 0.75em;
+	/* border: 1px dotted #787878; */
+}
+tr, td { padding: 0 0; }
+.readTable { width: 760px; }
+.listTable { width: 760px; }
+.contentTable { width: 760px; }
+.boardTitle{
+	height: 60px;
+	line-height: 60px;	
+	text-align: center;
+	/* border-bottom: 1px dotted #787878; */
+}
+
+/*  게시 글 리스트 */
+.listWrite { 
+	text-align: right; 
+	padding-right: 15px;	
+	border-bottom: 1px dotted #787878; 
+}
+.listThNo { 
+	width: 60px; 
+	height: 30px;	
+	border: 1px solid #787878; 
+	background: #EAEAEA; 
+}
+.listThTitle { 
+	width: 400px;	  
+	border: 1px solid #787878;  
+	background: #EAEAEA; 
+}
+.listThWriter { 
+	width: 110px;	  
+	border: 1px solid #787878; 
+	background: #EAEAEA; 
+}
+.listThRegDate { 
+	width: 130px;
+	border: 1px solid #787878;  
+	background: #EAEAEA; 
+}
+.listThReadCount {
+	width: 60px;	
+	border: 1px solid #787878;
+	background: #EAEAEA;
+}
+.listTdSpan { 
+	height: 30px; 
+	text-align: center; 
+	font-size: 12px; 
+}
+.listTdNo { 
+	height: 30px;
+}
+.listTdTitle {	
+	padding-left: 10px;	  
+	border: 1px solid #AAAAAA; 
+}
+.listTdNo, .listTdWriter, .listTdRegDate, .listTdReadCount {
+	text-align: center;		  
+	border: 1px solid #AAAAAA; 
+}
+table .listTr:hover {
+	background-color: #FFEEEE;
+}
+#searchForm {
+	text-align: center;
+}
+.listPage { 
+	height: 30px;
+	text-align: center;	 
+}
+
+/* 회원가입 폼 */
+#loginForm {		
+	margin-top: 100px;
+	padding-top: 30px;		
+}
+#loginForm h2, #loginForm p, 
+#loginForm input, #loginForm label { 
+	margin: 0px;
+	padding: 0px;
+	font-family: "맑은 고딕",돋움;
+	font-size: 12px;
+}		
+#loginForm h2 {
+	font-size: 40px;
+	letter-spacing: -1px;
+	color: #C8C8C8;
+	text-align: center;
+}
+#loginForm legend {
+	display: none;
+}
+#loginForm fieldset {
+	width: 330px;
+	margin: 10px auto;
+	border: 5px solid #efefef;
+	padding: 50px;
+	border-radius: 15px;
+}
+#loginForm #login {
+	float: left;
+}
+#loginForm label.labelStyle {
+	width: 60px;
+	display: block;
+	float: left;
+	font-weight: bold;	
+}
+#loginForm #userId, #loginForm #userPass {
+	width: 150px;
+	border: 1px solid #999;
+	margin-bottom: 5px;
+	padding: 2px;
+}
+#loginForm #btnLogin {
+	display: block;
+	background-color: #FF6633;
+	border-radius: 5px;
+	border-style: none;
+	color: #fff;
+	width: 80px;
+	height: 57px;
+	position: relative;
+	float: left;
+	left: 10px;
+	font-size: 13px;
+	font-weight: bold;
+	cursor: pointer;
+}
+#loginForm #btn1 {
+	clear: both;
+	margin-left: 60px;
+	padding: 10px 0px;
+}
+#loginForm #btn1 label {
+	font-size: 11px;
+	vertical-align: middle;
+}
+#loginForm #btn1 input{
+	height: 20px;
+}
+#loginForm #btn2 {
+	margin-left: 60px;
+}
+#loginForm #btn2 input {
+	background-color: #666;
+	border-style: none;
+	border-radius: 5px;
+	color: #fff;
+	height: 25px;
+	padding: 5px 10px;
+}

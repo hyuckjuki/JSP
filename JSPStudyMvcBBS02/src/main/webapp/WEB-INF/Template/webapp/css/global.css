@@ -1,0 +1,134 @@
+@CHARSET "UTF-8";
+/* 페이지 초기화 */
+* {
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;
+}
+/* 사이트 전체 적용 */
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+	font-family: "Gulim", Arial, Serif;
+	color: #666;
+	background-color: #FFF;
+	background-image: url(../images/body_back.gif);
+	background-repeat: repeat-x;
+	background-position: top;	
+}
+#wrap {
+	width: 1000px;
+	margin: 0 auto;	
+}
+.clear {
+	clear: both;
+}
+
+/* 링크 설정 */
+/* 
+	아래와 같이 link, visited, hover, active 순서로
+	지정하지 않으면 제대로 동작하지 않는다.
+*/
+a:link {
+	text-decoration: none;
+	color: #333;
+}
+ a:visited {
+	text-decoration: none;
+	color: #333;
+}
+a:hover {
+	text-decoration: none;
+	color: red;	
+}
+a:active {
+	text-decoration: none;
+	color: blue;
+}
+
+/* header */
+header { margin-top: 20px; }
+header img { border: none; }
+header #logo {
+	margin-left: 10px;
+	float: left;
+}
+header #header_link {
+	float: right;
+	margin-right: 10px;	
+}
+header #header_link ul { 	list-style: none; }
+header #header_link li {
+	float: left;
+	padding: 0 8px;
+	font-size: 0.75em;
+	border-right: 1px solid #999;
+}
+header #header_link ul li.no_line { border-right: none; }
+header #member_msg {
+	margin: 20px 20px 0 0;	
+	float: right;	
+	text-align: right;
+	font-size: 13px;
+	color: #008833;
+	width: 300px;
+	height: 30px;
+}
+
+/* article */
+article {
+	width: 760px;	
+	min-height: 500px;
+	margin: 20px auto;
+	padding: 10px;
+	clear: both;
+}
+
+/* footer */
+footer {
+	font-size: 0.75em;
+	margin: 10px 0 0 0;
+	background-image: url(../images/foot_back.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+}
+footer ul {
+	list-style: none;
+	margin: 0 0 0 200px;
+}
+footer ul li.no_line { background-image: none; }
+footer ul li {
+	float: left;
+	font-family: 'Gulim', Serif;
+	background-image: url(../images/foot_line.gif);
+	background-repeat: no-repeat;
+	background-position: right center;
+}
+footer ul li a {
+	font-size: 1em;
+	display: block;
+	padding: 5px 15px;
+}
+footer img {
+	margin: 10px 0 0 40px;
+	float: left;
+	width: 150px;
+	border: none;
+}
+footer #foot_info {
+	margin: 10px 0 0 25px;
+	padding: 0 0 20px 0;
+	line-height: 1.5em;
+	float: left;
+	width: 600px;	
+}
+
+/* 에러페이지 */
+#errorpage {
+	width: 460px;	
+	margin: 150px auto;
+	padding: 50px 0 0 150px;
+}
+#errorpage img { border: none; }
+
