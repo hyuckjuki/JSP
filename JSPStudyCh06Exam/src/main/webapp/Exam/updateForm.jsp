@@ -64,7 +64,7 @@
 		<tr>
 			<td class="contentTh">파&nbsp;&nbsp;&nbsp;&nbsp;일</td>
 			<td class="contentTd" colspan="3">
-				<input type="file" name="cover" size="70" id="cover" maxlength="50" value="<%=b.getCover() %>"/>
+				<input type="file" name="cover" size="70" id="cover" maxlength="50" value=<%=b.getCover()%>/>
 			</td>
 		</tr>
 		<tr>		

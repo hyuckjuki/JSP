@@ -39,8 +39,9 @@ public class ExamDao {
 	      
 	      String sqlInsert = "UPDATE "
 	            + "music SET mname=?, writer=?, "
-	            + "vocal=?, content=?, wdate=?, cover=? WHERE no=?";
-      
+	            + "vocal=?, content=?, wdate=? " + (v.getCover()  == null ? "" : ", cover=? ")
+	            + "WHERE no=?";
+	      
 	      try {
 	         // 2. DB에 연결된 Connection 객체를 구함
 	    	  conn = ds.getConnection();
@@ -52,8 +53,12 @@ public class ExamDao {
 	         pstmt.setString(3, v.getVocal());
 	         pstmt.setString(4, v.getContent());
 	         pstmt.setDate(5, v.getWdate());
-	         pstmt.setString(6, v.getCover());
-	         pstmt.setInt(7, v.getNo());
+	         if(v.getCover()!=null) {
+		         pstmt.setString(6, v.getCover());
+		         pstmt.setInt(7, v.getNo());
+		     } else {
+		    	 pstmt.setInt(6, v.getNo());
+	         }
 	         
 	         // 5. DB에 쿼리를 발행
 	         pstmt.executeUpdate();
@@ -69,6 +74,41 @@ public class ExamDao {
 	      } catch(SQLException e) {}
 	   }
 	 }
+	
+// 수정폼 입력 데이터를 DB에 저장하는 놈 - update 쿼리지만 cover 가 바뀌지 않을경우
+	public void updateBoardcovernull(ExamVo v) {
+		
+		String sqlInsert = "UPDATE "
+				+ "music SET mname=?, writer=?, "
+				+ "vocal=?, content=?, wdate=? WHERE no=?";
+		
+		try {
+			// 2. DB에 연결된 Connection 객체를 구함
+			conn = ds.getConnection();
+			// 3. 쿼리를 발행해 주는 PreaparedStatement 객체를 구함
+			pstmt = conn.prepareStatement(sqlInsert);
+			// 4. 쿼리에 있는 placeholder(?)에 대한 값을 설정
+			pstmt.setString(1, v.getMname());
+			pstmt.setString(2, v.getWriter());
+			pstmt.setString(3, v.getVocal());
+			pstmt.setString(4, v.getContent());
+			pstmt.setDate(5, v.getWdate());
+			pstmt.setInt(6, v.getNo());
+			
+			// 5. DB에 쿼리를 발행
+			pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			System.out.println("ExamDao - updateBoard() : SQLException");
+			e.printStackTrace();
+		} finally {
+			try {
+				// db에 작업에 사용한 객체를 역순으로 닫음
+				if(pstmt != null)pstmt.close();
+				if(conn != null)conn.close();
+			} catch(SQLException e) {}
+		}
+	}
 
 // db안의 데이터를 삭제하는 놈 - delete 쿼리
    public void deleteBoard(int no) {

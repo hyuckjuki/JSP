@@ -48,7 +48,7 @@
 			<tr>
 				<td class="contentTh">발매일</td>
 				<td class="contentTd" colspan=3>
-					<input type="date" name="wdate" size="90" id="wdate" maxlength="50"/>
+					<input type="date" name="wdate" size="90" id="wdate" maxlength="50" pattern="[1-9]{4}-[0-1][0-9]-[0-3][0-9]"/>
 				</td>
 			</tr>			
 			<tr>
@@ -74,5 +74,6 @@
 			</tr>
 		</table>
 	</form>
+	<script>document.cover.submit();</script>
 </body>
 </html>

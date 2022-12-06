@@ -66,6 +66,7 @@
 	pass = multi.getParameter("pass");
 	content = multi.getParameter("content");
 	String wdate = multi.getParameter("wdate");
+	String cover = multi.getParameter("cover");
 	
 	System.out.println("wdate : " + wdate);
 	// 사용자가 입력한 데이터를 Board 객체로 만듦
@@ -76,6 +77,7 @@
 	b.setVocal(vocal);
 	b.setPass(pass);
 	b.setContent(content);
+	b.setCover(cover);
 	
 	int year = Integer.parseInt(wdate.split("-")[0]);
 	int month = Integer.parseInt(wdate.split("-")[1]) -1;
@@ -86,14 +88,17 @@
 	b.setWdate(new Date(cal.getTimeInMillis()));
 	
 	// 파일 업로드에 대한 추가 - db에 파일정보를 추가하기d
+	
 	String fileName = multi.getFilesystemName("cover");
+	
 	System.out.println("업로드된 파일 명 : " + fileName);
 	System.out.println("원본 파일 명 : " + multi.getOriginalFileName("cover"));
-	b.setCover(fileName);
 	
-
-
+	if(fileName != null){
+	b.setCover(fileName);
+	}
 	dao.updateBoard(b);
+
 // 	response.sendRedirect("boardList.jsp"); // 1방법
 %>
 <!-- 2 방법  -->
